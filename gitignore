@@ -1,0 +1,11 @@
+# Foundry
+
+/foundry
+
+# Forge-Std
+
+/forge-std
+
+# Ignorar archivos de OpenZeppelin
+
+/lib
