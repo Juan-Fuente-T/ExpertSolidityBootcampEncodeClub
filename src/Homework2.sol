@@ -1,6 +1,5 @@
 //SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
-
  /**. Write a function that will delete items (one at a
 time) from a dynamic array without leaving
 gaps in the array. You should assume that the
@@ -12,7 +11,7 @@ and you need to delete the items at indexes 8,
 The final array will then have items
 {0,1,3,4,5,6,9,10,11}
  */
- 
+
 //When you try to delete the 7 it is actually the index 6
 //so deleting 7 is actually deleting 8
 contract Homework{

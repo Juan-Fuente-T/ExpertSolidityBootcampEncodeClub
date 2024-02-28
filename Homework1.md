@@ -1,6 +1,6 @@
 # ExpertSolidityBootcamp
 
-## Homeworks from the Expert Solidity Bootcamp 24 Cohort 1 https://www.encode.club/expert-solidity-bootcamp
+## Homeworks from the Expert Solidity Bootcamp 24 Cohort 1 Encode Club https://www.encode.club/expert-solidity-bootcamp
 
 ### HomeWork1
 
