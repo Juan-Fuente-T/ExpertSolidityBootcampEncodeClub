@@ -16,25 +16,27 @@ The final array will then have items
 //so deleting 7 is actually deleting 8
 contract Homework{
     
-    uint[] homeworkArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    uint[] dataArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
     error IndexOutOfBounds();
 
     function deleteItems(uint256  index) public {
-        //require(index >= 0 && index < homeworkArray.length,"Out of bounds");
-        if(index == 0 && index >= homeworkArray.length){
+        if(index == 0 && index >= dataArray.length){
             revert IndexOutOfBounds();
         }
-        uint256 arrayLenght = homeworkArray.length -1;
+        /*uint256 arrayLenght = dataArray.length -1;
         for (uint256 i = index; i < arrayLenght;){
-            homeworkArray[i] = homeworkArray[i+1];
+            dataArray[i] = dataArray[i+1];
             unchecked {
                 i++;  
             } 
-        }
-        homeworkArray.pop();
+        }*/
+        // we can directly replace since we don't need to keep order
+        dataArray[index] = dataArray[dataArray.length-1];
+        dataArray.pop();
+        dataArray.pop();
     }
     function getArray() public view returns(uint256[] memory ) {
-        return homeworkArray;
+        return dataArray;
     }
 }

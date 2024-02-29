@@ -15,3 +15,27 @@ docs/
 
 # Libraries
 /lib
+# Foundry
+
+/foundry
+
+# Forge-Std
+
+/forge-std
+
+# Ignorar carpeta lib
+
+/lib
+
+# Ignorar carpeta github/workflows
+
+/.github/workflows
+
+# Ignorar el archivo .gitmodules
+
+.gitmodules
+
+# Ignorar el archivo foundry.toml
+
+foundry.toml
+foundry-lock.json
