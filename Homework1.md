@@ -5,10 +5,17 @@
 ### HomeWork1
 
 - 1. Why is client diversity important for Ethereum?
-     The variety of customers contributes to the scalability of Blockchain. At the time that the volume of transactions grew, it was seen that the necessary computing was too much to keep everything in a single layer, so the variety facilitates the distribution of data and computing and therefore enhances scalability
+
+     The variety of clients contributes to the scalability of Blockchain. When the volume of transactions grew, it was seen that the computing power and the cost of storing data in each of the blocks was too high, so the variety of layers facilitates the distribution of data and distribution of computing, therefore enhancing scalability. It is positive because it lowers prices and improves efficiency and speed.
+
 - 2. Where is the full Ethereum state held ?
-     The "World State" in Ethereum is a mapping between addresses (accounts) and their respective states, stored in a data structure known as a Merkle Patricia Tree. This mapping is not stored on the blockchain, but it is expected that implementations store it in a trie. Information about Ethereum accounts resides in the "World State" and is stored in the trie of the "World State".
+
+     The "World State" in Ethereum is a mapping between addresses (accounts) and their respective states, stored in a data structure known as a Merkle Patricia Trie. This mapping is not stored on the blockchain, but it is expected that implementations store it in a tree. Information about Ethereum accounts resides in the "World State" and is stored in the trie of the "World State".
+
 - 3. What is a replay attack ? , which 2 pieces of information can prevent it ?
-     A replay attack is an attack from a malicious actor that intercepts and repeats a valid data transmission on another network (occured during the hard fork). V is either 27 or 28 in Bitcoin and Ethereum before EIP 155, since then, the chain ID is used in the calculation of v, to give protection against replaying transaction v = {0,1} + CHAIN_ID \* 2 + 35
+
+     A replay attack is an attack from a malicious actor that intercepts and repeats a valid data transmission on another network (occurred during the hard fork). V is either 27 or 28 in Bitcoin and Ethereum before EIP 155, since then, the chain ID is used in the calculation of v, to give protection against replaying transaction v = {0,1} + CHAIN_ID \* 2 + 35
+
 - 4. In a contract, how do we know who called a view function ?
-     Using msg.sender
+     Using msg.sender. This is one the solidity globbal variables. It's used to identify the sender of the current call.
+     https://docs.soliditylang.org/en/latest/units-and-global-variables.html
