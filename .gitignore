@@ -27,6 +27,10 @@ docs/
 
 /lib
 
+# Ignorar carpeta bin
+
+/bin 
+
 # Ignorar carpeta github/workflows
 
 /.github/workflows
@@ -39,3 +43,5 @@ docs/
 
 foundry.toml
 foundry-lock.json
+
+/.vscode
