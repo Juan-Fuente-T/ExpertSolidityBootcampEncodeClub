@@ -13,13 +13,13 @@
 
 - 1. Memory use in contract Store before optimization
 
-![contractMemoryAfter_image](contractMemoryAfter.png)
-![structAfter_image](structAfter.png)
+![contractMemoryBefore_image](contractMemoryBefore.png)
+![structBefore_image](structBefore.png)
 
 - 2. Memory use in contract Store after optimization
 
-![contractMemoryBefore_image](contractMemoryBefore.png)
-![structBefore_image](structBefore.png)
+![contractMemoryAfter_image](contractMemoryAfter.png)
+![structAfter_image](structAfter.png)
 
 #### Try out the Solidity Template or the Foundry Template
 
