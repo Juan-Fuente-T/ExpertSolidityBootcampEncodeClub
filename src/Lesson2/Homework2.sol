@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.21;
+pragma solidity ^0.8.4;
  /**. Write a function that will delete items (one at a
 time) from a dynamic array without leaving
 gaps in the array. You should assume that the
@@ -33,7 +33,7 @@ contract Homework2{
     * @dev Emits an ItemDeleted event with the index of the deleted item.
     */
     function deleteItems(uint256  index) public {
-        if(index == 0 && index >= dataArray.length){
+        if(index == 0 || index >= dataArray.length){
             revert IndexOutOfBounds();
         }
         // we can directly replace since we don't need to keep order
@@ -49,7 +49,7 @@ contract Homework2{
      * @dev Emits an ItemDeleted event with the index of the deleted item.
      */
     function deleteOrderedItems(uint256  index) public {
-        if(index == 0 && index >= dataArray.length){
+        if(index == 0 || index >= dataArray.length){
             revert IndexOutOfBounds();
         }
         //we want keep the item's order
