@@ -136,12 +136,8 @@ contract GasContract {
         if (_tier > 254) {
             revert InvalidWhitelistTier();
         }
-
-        if (_tier < 3) {
-            whitelist[_userAddrs] = _tier;
-        } else {
-            whitelist[_userAddrs] = 3;
-        }
+        //Removining the if-else saves more gas.
+        whitelist[_userAddrs] = _tier > 2 ? 3 : _tier;
 
         emit AddedToWhitelist(_userAddrs, _tier);
     }
