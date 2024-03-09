@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.8;
 
 contract GasContract {
     mapping(address => uint256) public balances;
@@ -58,38 +58,31 @@ contract GasContract {
         _;
     }
 
-    modifier onlyWhitelisted(address sender) {
-        uint256 usersTier = whitelist[msg.sender];
-        if (usersTier > 0 && usersTier < 4) {
-            _;
-        } else {
-            revert NotWhitelisted();
-        }
-    }
 
     constructor(address[] memory _admins, uint256 _totalSupply) {
         if (_admins.length > 5) {
             revert ExceedsMaximumAdministratorsAllowed();
         }
-
+        //ii is 0 by default. ii cannot have overflow. It's more efficient to have the length out.
         _owner = msg.sender;
-        uint256 adminLength = _admins.length;
-        for (uint256 ii; ii < adminLength;) {
+        uint256 adminsLength = _admins.length;
+        for (uint256 ii; ii < adminsLength;) {
             administrators[ii] = _admins[ii];
-        unchecked{
-            ii++;
-        }
+            unchecked {
+                ii++; 
+            }
         }
 
         balances[_owner] = _totalSupply;
     }
 
     function checkForAdmin(address _user) public view returns (bool admin_) {
+        //ii is 0 by default. ii cannot have overflow. 
         for (uint256 ii; ii < administrators.length;) {
             if (administrators[ii] == _user) {
                 return true;
             }
-            unchecked {
+            unchecked{
                 ii++;
             }
         }
@@ -114,7 +107,8 @@ contract GasContract {
         address _recipient,
         uint256 _amount,
         string calldata _name
-    ) public {
+    ) public{
+        //Removing the modifier saves more gas.
         if (_amount > balances[msg.sender]) {
             revert InsufficientBalance();
         }
@@ -138,11 +132,16 @@ contract GasContract {
         address _userAddrs,
         uint256 _tier
     ) public onlyAdminOrOwner {
+        //Removing the modifier saves more gas.
         if (_tier > 254) {
             revert InvalidWhitelistTier();
         }
-        uint256 tier = _tier > 3 ? 3 : _tier;
-        whitelist[_userAddrs] = tier;
+
+        if (_tier < 3) {
+            whitelist[_userAddrs] = _tier;
+        } else {
+            whitelist[_userAddrs] = 3;
+        }
 
         emit AddedToWhitelist(_userAddrs, _tier);
     }
@@ -150,12 +149,18 @@ contract GasContract {
     function whiteTransfer(
         address _recipient,
         uint256 _amount
-    ) public onlyWhitelisted(msg.sender) {
-        if (_amount > balances[msg.sender]) {
-            revert InsufficientBalance();
-        }
-        if (_amount < 4) {
-            revert AmountTooSmall();
+    ) public{
+        uint256 usersTier = whitelist[msg.sender];
+        if (usersTier > 0 && usersTier < 4) {
+         
+            if (_amount > balances[msg.sender]) {
+                revert InsufficientBalance();
+            }
+            if (_amount < 4) {
+                revert AmountTooSmall();
+            }
+        } else {
+            revert NotWhitelisted();
         }
 
         whiteListStruct[msg.sender].amount = _amount;
