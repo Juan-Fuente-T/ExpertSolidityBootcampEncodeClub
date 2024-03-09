@@ -41,7 +41,7 @@
    offset := keccak256(0, 0x40)
    }
 
-- The function calculates a unique storage location for the allowance amount that an account has approved for a spender.
+- The function calculates a unique storage location for the allowance amount that an account has approved for a spender in a ERC20.
   It obtains the value of one account using accountToStorageOffset() function
   It stores this value in memory at position 0.
   It stores the spender's address in memory at position 0x20.
