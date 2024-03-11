@@ -29,7 +29,7 @@ contract CallChecker{
         // Extract function selector from data
         bytes4 functionSelector;
         assembly {
-            functionSelector := mload(add(data, 0x20))
+            functionSelector := sload(add(data.offset, 0x20))
         }
 
         // Check if the function selector corresponds to the transfer function of an ERC20 token
@@ -39,8 +39,8 @@ contract CallChecker{
         address target;
         uint256 amount;
         assembly {
-            target := mload(add(data, 0x24)) // Skip over the function selector (4 bytes) to get the target address (32 bytes)
-            amount := mload(add(data, 0x44)) // Skip over the function selector and target address to get the amount (32 bytes)
+            target := sload(add(data.offset, 0x24)) // Skip over the function selector (4 bytes) to get the target address (32 bytes)
+            amount := sload(add(data.offset, 0x44)) // Skip over the function selector and target address to get the amount (32 bytes)
         }
 
         // Emit an event with the details
