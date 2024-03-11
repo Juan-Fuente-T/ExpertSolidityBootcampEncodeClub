@@ -39,12 +39,7 @@ contract GasContract {
     // }
 
     error Unauthorized();
-    error ExceedsMaximumAdministratorsAllowed();
     error InsufficientBalance();
-    error RecipientNameTooLong();
-    error InvalidWhitelistTier();
-    error NotWhitelisted();
-    error AmountTooSmall();
 
     event AddedToWhitelist(address userAddress, uint256 tier);
     event Transfer(address recipient, uint256 amount);
@@ -54,24 +49,24 @@ contract GasContract {
         if (!checkForAdmin(msg.sender) || msg.sender != _owner) {
             revert Unauthorized();
         }
-
         _;
     }
 
-
     constructor(address[] memory _admins, uint256 _totalSupply) {
-        if (_admins.length > 5) {
-            revert ExceedsMaximumAdministratorsAllowed();
+        uint256 adminsLength = _admins.length;
+        //Checking whith assembly save more gas
+        assembly{
+            if gt(adminsLength,5){revert (0,0)}
         }
         //ii is 0 by default. ii cannot have overflow. It's more efficient to have the length out.
         _owner = msg.sender;
-        uint256 adminsLength = _admins.length;
         for (uint256 ii; ii < adminsLength;) {
             administrators[ii] = _admins[ii];
             unchecked {
                 ii++; 
             }
         }
+        
 
         balances[_owner] = _totalSupply;
     }
@@ -87,6 +82,24 @@ contract GasContract {
             }
         }
     }
+/* //Not working
+    function checkForAdmin(address _user) public view returns (bool) {
+        //ii is 0 by default. ii cannot have overflow. 
+        bool admin_;
+        assembly {
+            let length := sload(administrators.slot)
+            let i := 0
+            for { } lt(i, length) { i := add(i, 1) } {
+                let admin := sload(add(administrators.slot, i))
+                if eq(admin, _user) {
+                    admin_ := 1
+                    break
+                }
+            }
+    }
+    return admin_;
+
+ */
 
     function balanceOf(address _user) public view returns (uint256 balance_) {
         return balances[_user];
@@ -112,9 +125,18 @@ contract GasContract {
         if (_amount > balances[msg.sender]) {
             revert InsufficientBalance();
         }
-        if (bytes(_name).length > 8) {
-            revert RecipientNameTooLong();
+        assembly{
+            if gt(_name.length, 8){revert(0, 0)}
         }
+        /*
+         // Calcular la clave de almacenamiento para balances[msg.sender]
+            let key := keccak256(caller(), 0x20)
+            let senderBalance := sload(add(balances.slot, key))
+
+            if gt(_amount, senderBalance){
+                revert(0, 0)
+            }
+        */
 
         balances[msg.sender] -= _amount;
         balances[_recipient] += _amount;
@@ -133,9 +155,22 @@ contract GasContract {
         uint256 _tier
     ) public onlyAdminOrOwner {
         //Removing the modifier saves more gas.
-        if (_tier > 254) {
-            revert InvalidWhitelistTier();
+        //Cheking with assembly save more gas
+        assembly{
+            if gt(_tier, 254){
+                revert(0, 0)
+            }
         }
+        /*
+        //This is with error message
+        if gt(_tier, 254){
+                // Preparar el mensaje de error personalizado
+                let ptr := mload(0x40) // Obtener el puntero libre de memoria
+                mstore(ptr, "Tier is too high") // Almacenar el mensaje de error
+                mstore(add(ptr, 32), 16) // Longitud del mensaje de error
+                revert(ptr, 64) // Revertir con el mensaje de error
+            }
+        */
         //Removining the if-else saves more gas.
         whitelist[_userAddrs] = _tier > 2 ? 3 : _tier;
 
@@ -147,17 +182,17 @@ contract GasContract {
         uint256 _amount
     ) public{
         uint256 usersTier = whitelist[msg.sender];
-        if (usersTier > 0 && usersTier < 4) {
-         
-            if (_amount > balances[msg.sender]) {
-                revert InsufficientBalance();
-            }
-            if (_amount < 4) {
-                revert AmountTooSmall();
-            }
-        } else {
-            revert NotWhitelisted();
+        //Chequing with assembly save more gas
+        assembly{
+            if lt(_amount, 4){revert(0, 0)}
+            if iszero(usersTier){revert(0, 0)}
+            if gt(usersTier, 3){revert(0, 0)}
         }
+        
+        if (_amount > balances[msg.sender]) {
+            revert InsufficientBalance();
+        }
+
 
         whiteListStruct[msg.sender].amount = _amount;
         whiteListStruct[msg.sender].paymentStatus = true;
