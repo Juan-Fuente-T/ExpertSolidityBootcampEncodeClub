@@ -123,7 +123,7 @@ Question 2
 
 El contrato ERC20 no tiene una función safeTransferFrom() como la que se está utilizando de esta manera en la línea 67 _erc20Token.safeTransferFrom(bidder, msg.sender, price);_
 
-El contrato está usnado usin SafeTransferLib for ERC20, pero la función safeTransferFrom() toma 4 parámetros, y en el contrato solo se están utilizando 3:
+El contrato está usando "using SafeTransferLib for ERC20", pero la función safeTransferFrom() toma 4 parámetros, y en el contrato solo se están utilizando 3:
 
 function safeTransferFrom(
 ERC20 token,

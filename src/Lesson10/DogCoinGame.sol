@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 //import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract DogCoinGame is ERC20 {
+/**contract DogCoinGame is ERC20 {
     uint256 public currentPrize;
     uint256 public numberPlayers;
     address payable[] public players;
@@ -38,4 +38,4 @@ contract DogCoinGame is ERC20 {
             winners[i].send(_amount);
         }
     }
-}
+}*/
